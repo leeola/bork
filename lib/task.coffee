@@ -50,6 +50,15 @@ class Task
   # 
   _next: =>
   
+  # () -> bool
+  #
+  # Desc:
+  #   Checks whether or not this Task has been completed or not. Completed is
+  #   defined as the task function itself having called it's function
+  #   argument *(@_next)*.
+  completed: =>
+    return @_completed
+  
   # (task) -> this
   #
   # Params:
@@ -180,6 +189,14 @@ class Task
     @_fn @_next
     for par in @_pars
       par.start()
+  
+  # () -> bool
+  #
+  # Desc:
+  #   Checks whether or not this Task has been started or not. Started is
+  #   defined as `@start()` being called, and all requirements being met.
+  started: =>
+    return @_started
 
 
 # (task) -> new Task(task_fn) | task
