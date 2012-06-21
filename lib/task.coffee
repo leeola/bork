@@ -140,13 +140,12 @@ class Task
   req: (task) =>
     if task instanceof Function
       task = new Task task
-    
     @_reqs.push task
-    
     # By adding @ as a seq to the given task, we assure that even if the
     # requirement causes this-task to not execute, this-task will still
     # execute *eventually*.
     task.seq @
+    return @
   
   # (task) -> new Task(task_fn) | task
   #
