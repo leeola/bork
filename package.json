@@ -1,0 +1,33 @@
+{
+  "name": "bork",
+  "version": "0.0.0",
+  "keywords": [
+    "dragons"
+  ],
+  "description": "A simple task queuing library, and pet project of the owner. Look away.",
+  "author": "leeolayvar <leeolayvar@gmail.com> (http://leeolayvar.com)",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/leeolayvar/bork.git"
+  },
+  "bugs": {
+    "url": "http://github.com/leeolayvar/bork/issues"
+  },
+  "scripts": {
+    "prepublish": "cake prepublish",
+    "test": "./build/test/index.js"
+  },
+  "devDependencies": {
+    "mocha": "0.14.x",
+    "should": "0.5.x",
+    "coffee-script": "1.3.x"
+  },
+  "engine": "node",
+  "main": "./build/lib/index.js",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://raw.github.com/leeolayvar/bork/master/LICENSE"
+    }
+  ]
+}
