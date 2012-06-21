@@ -182,4 +182,13 @@ class Task
       par.start()
 
 
+# (task) -> new Task(task_fn) | task
+#
+# Params:
+#   task: A function or Task instance
+#
+# Desc:
+#   A simple Task creation function, so you can avoid the `new` syntax if
+#   preferred.
+exports.create = (task) -> return new task.Task(task)
 exports.Task = Task

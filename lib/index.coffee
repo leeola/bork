@@ -6,9 +6,7 @@
 #
 task = require './task'
 
-create = (task) -> return new task.Task(task)
 
-
-exports = module.exports = create
-exports.create = create
+exports = module.exports = task.create
+exports.create = task.create
 exports.task = task
