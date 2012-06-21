@@ -52,7 +52,26 @@ class Task
   
   is_req: =>
   
-  link: =>
+  # (task) -> new Task(task) | task
+  #
+  # Params:
+  #   task: A function or an instance of Task
+  #
+  # Returns:
+  #   An instance of Task based on the function/task given.
+  #
+  # Desc:
+  #   This is essentially the same as `@par`. The difference being that while
+  #   this-task and arg-task are both started at the same time, neither task
+  #   will call their children (seqs) until both are completed. To phrase
+  #   it differently, they execute in parallel, but their completion is
+  #   dependant on their linked tasks.
+  link: (task) =>
+    if task instanceof Function
+      task = new Task task
+    @_links.push task
+    task._links.push @
+    return task
   
   # (task) -> new Task(task) | task
   #
