@@ -117,7 +117,7 @@ class Task
   #   is started, start this task.
   par: (task) =>
     if task instanceof Function
-      task = new Task(task)
+      task = new Task task
     
     # Append the new task to this pars, and this pars to the new task.
     # that way when either task gets started, the other one gets started
@@ -139,7 +139,7 @@ class Task
   #   this-task (via a seq call).
   req: (task) =>
     if task instanceof Function
-      task = new Task(task)
+      task = new Task task
     
     @_reqs.push task
     
@@ -178,7 +178,7 @@ class Task
     
     # Mark the task as started, call the fn, and start all pars.
     @_started = true
-    @_fn(@_next)
+    @_fn @_next
     for par in @_pars
       par.start()
 
