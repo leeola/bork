@@ -98,7 +98,19 @@ class Task
     # execute *eventually*.
     task.seq @
   
-  seq: =>
+  # (task) -> new Task(task_fn) | task
+  #
+  # Params:
+  #   task: A function or Task instance
+  #
+  # Desc:
+  #   Execute the given task after this task is complete, and all links
+  #   have been completed.
+  seq: (task) =>
+    if task instanceof Task
+      task = new Task task
+    @_seqs.push task
+    return task
   
   # () -> undefined
   #
