@@ -50,7 +50,38 @@ class Task
   # 
   _next: =>
   
-  is_req: =>
+  # (task) -> this
+  #
+  # Params:
+  #   task: A function or an instance of Task
+  #
+  # Returns:
+  #   Returns `@`. By returning this task, we allow code flow such as..
+  #   ```
+  #     task = new Task
+  #     other = new Task
+  #     task.seq(fn).is_req(other).seq(diff_fn)
+  #   ```
+  #   where if you were forced to use `@req`, you would have to have
+  #   expose the object, like..
+  #   ```
+  #     task = new Task
+  #     other = new Task
+  #     seq_task = task.seq(fn)
+  #     other.req(seq_task)
+  #     seq_task.seq(diff_fn)
+  #   ```
+  #
+  # Desc:
+  #   This is essentially the reverse of `@req`. The difference being, that
+  #   this method sets the completion of this-task as a requirement for the
+  #   arg-task. It's just a shorthand method, designed for readability and
+  #   code flow, so a requirement can be set inline.
+  is_req: (task) =>
+    if task instanceof Function
+      task = new Task task
+    task.req @
+    return @
   
   # (task) -> new Task(task) | task
   #
