@@ -18,9 +18,33 @@ describe 'Task', ->
   {Task} = require '../lib/task'
   
   describe '@constructor', ->
-    describe 'given nothing', ->
-    describe 'given function', ->
-    describe 'given task', ->
+    describe 'with no args', ->
+      task = undefined
+      before ->
+        task = new Task()
+      
+      it 'should create a function of it\'s own', ->
+        task._fn.should.be.an.instanceof Function
+    
+    describe 'with a function arg', ->
+      task = undefined
+      fn = undefined
+      before ->
+        fn = ->
+        task = new Task fn
+      
+      it 'should store the given function', ->
+        task._fn.should.equal fn
+    
+    describe 'with a task as an arg', ->
+      task = undefined
+      arg_task = undefined
+      before ->
+        arg_task = new Task()
+        task = new Task arg_task
+      
+      it 'should store the arg_task as a seq', ->
+        task._reqs.should.eql [arg_task]
   
   describe '@is_req', ->
   

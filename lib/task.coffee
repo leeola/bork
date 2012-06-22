@@ -22,7 +22,7 @@ class Task
   # Desc:
   #   Initialize a Task object.
   constructor: (task) ->
-    if task?
+    if not task?
       task = (next) -> next()
     else if task instanceof Task
       task = (next) -> next()
