@@ -22,15 +22,6 @@ class Task
   # Desc:
   #   Initialize a Task object.
   constructor: (task) ->
-    if not task?
-      task = (next) -> next()
-    else if task instanceof Task
-      task = (next) -> next()
-      @seq task
-    
-    # The fn this task contains.
-    @_fn = task
-    
     # Simple bools for whether this task has been started and/or completed.
     @_started = false
     @_completed = false
@@ -47,6 +38,15 @@ class Task
     # A list of tasks that will be executed when this task is complete, and
     # all requirements (such as reqs and links) have completed.
     @_seqs = []
+    
+    if not task?
+      task = (next) -> next()
+    else if task instanceof Task
+      task = (next) -> next()
+      @seq task
+    
+    # The fn this task contains.
+    @_fn = task
   
   # () -> undefined
   #
