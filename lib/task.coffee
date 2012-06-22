@@ -34,6 +34,7 @@ class Task
     # Simple bools for whether this task has been started and/or completed.
     @_started = false
     @_completed = false
+    @_started_seqs = false
     
     # A list of tasks that are started when this was started (like pars),
     # but these tasks must be completed before this task will call it's seqs
@@ -47,8 +48,52 @@ class Task
     # all requirements (such as reqs and links) have completed.
     @_seqs = []
   
-  # 
+  # () -> undefined
+  #
+  # Desc:
+  #   This method is given as the callback to `@_fn`, and when called,
+  #   signals the completion of the given task.
   _next: =>
+    @_completed = true
+    @_start_seqs()
+  
+  # () -> undefined
+  #
+  # Desc:
+  #   Start all of the `@_links` seqs.
+  #   
+  #   This method is called by `@_next` when this-task is the last task to
+  #   be completed. Since it is the last, it needs to start all of the other
+  #   tasks children, because they were waiting on this task *(because they're
+  #   linked.. get it?)*.
+  _start_link_seqs: =>
+    for link in @_links
+      link._start_seqs()
+  
+  # () -> undefined
+  #
+  # Desc:
+  #   Start all of the seq tasks given to this Task.
+  _start_seqs: =>
+    if @started_seqs()
+      return
+    
+    # Ensure that our seq's never get called if any @_links have not yet
+    # completed.
+    for link in @_links
+      if not link.completed()
+        return
+    
+    # All children requirements have been met, so, call the children!
+    @_started_seqs = true
+    for seq in @_seqs
+      seq.start()
+    
+    # Since we looped through all of the linked tasks (a few lines up) and
+    # saw that all of them are completed, we know that out of all of the
+    # linked tasks, this task was the last to complete. So, we need to
+    # start their seqs, since they waited for this task to complete.
+    @_start_link_seqs()
   
   # () -> bool
   #
@@ -197,6 +242,13 @@ class Task
   #   defined as `@start()` being called, and all requirements being met.
   started: =>
     return @_started
+  
+  # () -> bool
+  #
+  # Desc:
+  #   Checks whether or not this Task has started the seq tasks contained.
+  started_seqs: =>
+    return @_started_seqs
 
 
 # (task) -> new Task(task_fn) | task
