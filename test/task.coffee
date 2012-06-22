@@ -44,7 +44,7 @@ describe 'Task', ->
         task = new Task arg_task
       
       it 'should store the arg_task as a seq', ->
-        task._reqs.should.eql [arg_task]
+        task._seqs.should.eql [arg_task]
   
   describe '@is_req', ->
   
