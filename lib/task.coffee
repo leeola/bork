@@ -42,8 +42,8 @@ class Task
     if not task?
       task = (next) -> next()
     else if task instanceof Task
-      task = (next) -> next()
       @seq task
+      task = (next) -> next()
     
     # The fn this task contains.
     @_fn = task
