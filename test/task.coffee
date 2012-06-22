@@ -51,6 +51,38 @@ describe 'Task', ->
   describe '#link', ->
   
   describe '#par', ->
+    describe 'root.par to a task that does not complete', ->
+      root = par = null
+      before_each ->
+        root = new Task()
+        par = new Task (next) ->
+        root.par par
+      
+      it 'should store the par-task in @_pars', ->
+        root._pars.should.eql [par]
+      
+      it 'should also store root-task in par-task._pars', ->
+        par._pars.should.eql [root]
+      
+      describe 'and then start root', ->
+        before_each ->
+          root.start()
+        
+        it 'root should show started', ->
+          root.started().should.be.true
+        
+        it 'par should show started', ->
+          root.started().should.be.true
+      
+      describe 'and then start par', ->
+        before_each ->
+          par.start()
+        
+        it 'root should show started', ->
+          root.started().should.be.true
+        
+        it 'par should show started', ->
+          root.started().should.be.true
   
   describe '#req', ->
   
