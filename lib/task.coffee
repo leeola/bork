@@ -210,7 +210,7 @@ class Task
   #   Execute the given task after this task is complete, and all links
   #   have been completed.
   seq: (task) =>
-    if task instanceof Task
+    if task instanceof Function
       task = new Task task
     @_seqs.push task
     return task
