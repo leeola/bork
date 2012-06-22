@@ -17,7 +17,7 @@ it = global.it
 describe 'Task', ->
   {Task} = require '../lib/task'
   
-  describe '@constructor', ->
+  describe '#constructor', ->
     describe 'with no args', ->
       task = undefined
       before ->
@@ -46,12 +46,12 @@ describe 'Task', ->
       it 'should store the arg_task as a seq', ->
         task._seqs.should.eql [arg_task]
   
-  describe '@is_req', ->
+  describe '#is_req', ->
   
-  describe '@link', ->
+  describe '#link', ->
   
-  describe '@par', ->
+  describe '#par', ->
   
-  describe '@req', ->
+  describe '#req', ->
   
-  describe '@seq', ->
+  describe '#seq', ->
