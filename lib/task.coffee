@@ -234,6 +234,9 @@ class Task
     @_fn @_next
     for par in @_pars
       par.start()
+    
+    for link in @_links
+      link.start()
   
   # () -> bool
   #
