@@ -49,6 +49,39 @@ describe 'Task', ->
   describe '#is_req', ->
   
   describe '#link', ->
+    describe 'with a root task', ->
+      root = null
+      before_each ->
+        root = new Task()
+      describe 'and a link task that doesn\'t complete.', ->
+        link = next = null
+        before_each ->
+          link = new Task (next_arg) -> next = next_arg
+          root.link link
+        describe 'Start the root', ->
+          before_each ->
+            root.start()
+          
+          it 'and it should show started and completed, but not started seqs', ->
+            root.started().should.be.true
+            root.completed().should.be.true
+            root.started_seqs().should.be.false
+          
+          it 'and link should show started, not completed, and not started seqs', ->
+            link.started().should.be.true
+            link.completed().should.be.false
+            link.started_seqs().should.be.false
+          
+          describe 'now complete the link task', ->
+            before_each ->
+              next()
+            
+            it 'root should show started_seqs', ->
+              root.started_seqs().should.be.true
+            
+            it 'root should show completed and started_seqs', ->
+              link.completed().should.be.true
+              link.started_seqs().should.be.true
   
   describe '#par', ->
     describe 'root.par to a task that does not complete', ->
