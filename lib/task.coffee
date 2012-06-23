@@ -195,10 +195,6 @@ class Task
     if task instanceof Function
       task = new Task task
     @_reqs.push task
-    # By adding @ as a seq to the given task, we assure that even if the
-    # requirement causes this-task to not execute, this-task will still
-    # execute *eventually*.
-    task.seq @
     return @
   
   # (task) -> new Task(task_fn) | task
@@ -227,6 +223,9 @@ class Task
     # Check the reqs to ensure all have finished.
     for req in @_reqs
       if req._completed is false
+        # By adding @ as a seq to the req-task, we assure that this-task
+        # will still execute *eventually*.
+        req.seq @
         return
     
     # Mark the task as started, call the fn, and start all pars.
