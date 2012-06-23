@@ -196,6 +196,8 @@ describe 'Task', ->
             seq.started_seqs().should.be.false
           
           describe 'and then call the root\'s next()', ->
+            before_each ->
+              next()
             
             it 'and root should show started, completed, and started_seqs', ->
               root.started().should.be.true
