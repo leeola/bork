@@ -47,6 +47,58 @@ describe 'Task', ->
         task._seqs.should.eql [arg_task]
   
   describe '#is_req', ->
+    describe 'with a root task', ->
+      root = null
+      before_each ->
+        root = new Task()
+      describe 'and a isreq task.', ->
+        isreq = null
+        before_each ->
+          isreq = new Task()
+          isreq.is_req root
+        describe 'Start the root', ->
+          before_each ->
+            root.start()
+          
+          it 'and it should not show started, completed, or started_seqs', ->
+            root.started().should.be.false
+            root.completed().should.be.false
+            root.started_seqs().should.be.false
+          
+          it 'and isreq should not show started, completed, or started_seqs', ->
+            isreq.started().should.be.false
+            isreq.completed().should.be.false
+            isreq.started_seqs().should.be.false
+          
+          describe 'and then, start the isreq', ->
+            before_each ->
+              isreq.start()
+            
+            it 'and root should show started, completed, and started_seqs', ->
+              root.started().should.be.true
+              root.completed().should.be.true
+              root.started_seqs().should.be.true
+            
+            it 'and isreq should show started, completed, and started_seqs', ->
+              isreq.started().should.be.true
+              isreq.completed().should.be.true
+              isreq.started_seqs().should.be.true
+        
+        describe 'Start the isreq', ->
+          before_each ->
+            isreq.start()
+          
+          # root shouldn't show started/etc because req's only call children
+          # if the children *tried* to start, but couldn't because of the req.
+          it 'and root should not show started, completed, or started_seqs', ->
+            root.started().should.be.false
+            root.completed().should.be.false
+            root.started_seqs().should.be.false
+          
+          it 'and isreq should show started, completed, and started_seqs', ->
+            isreq.started().should.be.true
+            isreq.completed().should.be.true
+            isreq.started_seqs().should.be.true
   
   describe '#link', ->
     describe 'with a root task', ->
