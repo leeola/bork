@@ -226,7 +226,7 @@ class Task
     
     # Check the reqs to ensure all have finished.
     for req in @_reqs
-      if req._task_completed is false
+      if req._completed is false
         return
     
     # Mark the task as started, call the fn, and start all pars.
