@@ -118,5 +118,57 @@ describe 'Task', ->
           root.started().should.be.true
   
   describe '#req', ->
+    describe 'with a root task', ->
+      root = null
+      before_each ->
+        root = new Task()
+      describe 'and a req task.', ->
+        req = null
+        before_each ->
+          req = new Task()
+          root.req req
+        describe 'Start the root', ->
+          before_each ->
+            root.start()
+          
+          it 'and it should not show started, completed, or started_seqs', ->
+            root.started().should.be.false
+            root.completed().should.be.false
+            root.started_seqs().should.be.false
+          
+          it 'and req should not show started, completed, or started_seqs', ->
+            req.started().should.be.false
+            req.completed().should.be.false
+            req.started_seqs().should.be.false
+          
+          describe 'and then, start the req', ->
+            before_each ->
+              req.start()
+            
+            it 'and root should show started, completed, and started_seqs', ->
+              root.started().should.be.true
+              root.completed().should.be.true
+              root.started_seqs().should.be.true
+            
+            it 'and req should show started, completed, and started_seqs', ->
+              req.started().should.be.true
+              req.completed().should.be.true
+              req.started_seqs().should.be.true
+        
+        describe 'Start the req', ->
+          before_each ->
+            req.start()
+          
+          # root shouldn't show started/etc because req's only call children
+          # if the children *tried* to start, but couldn't because of the req.
+          it 'and root should not show started, completed, or started_seqs', ->
+            root.started().should.be.false
+            root.completed().should.be.false
+            root.started_seqs().should.be.false
+          
+          it 'and req should show started, completed, and started_seqs', ->
+            req.started().should.be.true
+            req.completed().should.be.true
+            req.started_seqs().should.be.true
   
   describe '#seq', ->
