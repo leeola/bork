@@ -172,3 +172,38 @@ describe 'Task', ->
             req.started_seqs().should.be.true
   
   describe '#seq', ->
+    describe 'With a root task that doesn\'t complete', ->
+      root = next = null
+      before_each ->
+        root = new Task (next_arg) -> next = next_arg
+      describe 'and a seq task.', ->
+        seq = null
+        before_each ->
+          seq = new Task()
+          root.seq seq
+        describe 'Start the root', ->
+          before_each ->
+            root.start()
+          
+          it 'and it should show started but not completed or started_seqs', ->
+            root.started().should.be.true
+            root.completed().should.be.false
+            root.started_seqs().should.be.false
+          
+          it 'and seq should not show started, completed, or started_seqs', ->
+            seq.started().should.be.false
+            seq.completed().should.be.false
+            seq.started_seqs().should.be.false
+          
+          describe 'and then call the root\'s next()', ->
+            
+            it 'and root should show started, completed, and started_seqs', ->
+              root.started().should.be.true
+              root.completed().should.be.true
+              root.started_seqs().should.be.true
+            
+            it 'and seq should show started, completed, and started_seqs', ->
+              seq.started().should.be.true
+              seq.completed().should.be.true
+              seq.started_seqs().should.be.true
+
