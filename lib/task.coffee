@@ -261,5 +261,5 @@ class Task
 # Desc:
 #   A simple Task creation function, so you can avoid the `new` syntax if
 #   preferred.
-exports.create = (task) -> return new task.Task(task)
+exports.create = (task) -> return new Task(task)
 exports.Task = Task
