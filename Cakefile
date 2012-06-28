@@ -64,3 +64,9 @@ task 'test:nobuild', 'just run the tests, don\'t build anything', ->
   btask.seq (done) ->
     console.log 'test start'
     exec MOCHA_BIN, ['./test'], -> console.log 'test done'; done()
+
+task 'prepublish', 'Build all, test all. Designed to work before `npm publish`', ->
+  invoke 'build:lib'
+  invoke 'build:test'
+  invoke 'test:nobuild'
+  btask.start()
