@@ -19,7 +19,7 @@
   },
   "scripts": {
     "prepublish": "cake prepublish",
-    "test": "./build/test/index.js"
+    "test": "cake test:all"
   },
   "devDependencies": {
     "mocha": "0.14.x",
