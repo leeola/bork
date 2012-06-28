@@ -1,6 +1,6 @@
 {
   "name": "bork",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A simple task queuing library, and pet project of the owner.",
   "keywords": [
     "asynchronous",
@@ -19,7 +19,7 @@
   },
   "scripts": {
     "prepublish": "cake prepublish",
-    "test": "./build/test/index.js"
+    "test": "cake test:all"
   },
   "devDependencies": {
     "mocha": "0.14.x",
