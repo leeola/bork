@@ -14,9 +14,7 @@
 # MIT Licensed
 #
 {spawn} = require 'child_process'
-# Once we push version 0.0.1, we need to use the npm version instead
-# of the likely unstable ./build/lib version.
-bork = require './build/lib'
+bork = require 'bork'
 
 COFFEE_BIN = './node_modules/coffee-script/bin/coffee'
 MOCHA_BIN = './node_modules/mocha/bin/mocha'
