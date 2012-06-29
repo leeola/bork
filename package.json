@@ -1,6 +1,6 @@
 {
   "name": "bork",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple task queuing library, and pet project of the owner.",
   "keywords": [
     "asynchronous",
@@ -24,7 +24,8 @@
   "devDependencies": {
     "mocha": "0.14.x",
     "should": "0.5.x",
-    "coffee-script": "1.3.x"
+    "coffee-script": "1.3.x",
+    "bork": "0.0.x"
   },
   "engine": "node",
   "main": "./build/lib/index.js",
