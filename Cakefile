@@ -29,37 +29,37 @@ exec = (cmd, args=[], cb=->) ->
 
 # We're going to give the bork task instance a different name, to avoid
 # overlapping Cakefile.task.
-btask = bork()
+bork_task = bork()
 
 
 task 'build', 'build all', ->
   invoke 'build:lib'
   invoke 'build:test'
-  btask.start()
+  bork_task.start()
 
 task 'build:lib', 'build lib', ->
-  btask.link (done) ->
+  bork_task.link (done) ->
     console.log 'build lib start'
     exec COFFEE_BIN, ['-co', './build/lib', './lib'], -> console.log 'build lib done'; done()
 
 task 'build:test', 'build test', ->
-  btask.link (done) ->
+  bork_task.link (done) ->
     console.log 'build test start'
     exec COFFEE_BIN, ['-co', './build/test', './test'], -> console.log 'build test done'; done()
 
 task 'test', 'build test, then run it', ->
   invoke 'build:test'
   invoke 'test:nobuild'
-  btask.start()
+  bork_task.start()
 
 task 'test:all', 'build all, and run the tests', ->
   invoke 'build:lib'
   invoke 'build:test'
   invoke 'test:nobuild'
-  btask.start()
+  bork_task.start()
 
 task 'test:nobuild', 'just run the tests, don\'t build anything', ->
-  btask.seq (done) ->
+  bork_task.seq (done) ->
     console.log 'test start'
     exec MOCHA_BIN, ['./test'], -> console.log 'test done'; done()
 
@@ -67,4 +67,4 @@ task 'prepublish', 'Build all, test all. Designed to work before `npm publish`',
   invoke 'build:lib'
   invoke 'build:test'
   invoke 'test:nobuild'
-  btask.start()
+  bork_task.start()
