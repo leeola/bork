@@ -1,17 +1,12 @@
-#
-# test/task.coffee
-#
-# Copyright (c) 2012 Lee Olayvar <leeolayvar@gmail.com>
-# MIT Licensed
-#
+# 
+# # Task Tests
+# 
+# Tests focused on the Bork Task object.
 should = require 'should'
+dork = require 'dork'
+require './options'
 
 
-# There are here so my IDE will shut the hell up.
-before = global.before
-before_each = global.beforeEach
-describe = global.describe
-it = global.it
 
 
 describe 'Task', ->
@@ -20,7 +15,7 @@ describe 'Task', ->
   describe '#constructor', ->
     describe 'with no args', ->
       task = undefined
-      before ->
+      before_all ->
         task = new Task()
       
       it 'should create a function of it\'s own', ->
@@ -29,7 +24,7 @@ describe 'Task', ->
     describe 'with a function arg', ->
       task = undefined
       fn = undefined
-      before ->
+      before_all ->
         fn = ->
         task = new Task fn
       
@@ -39,7 +34,7 @@ describe 'Task', ->
     describe 'with a task as an arg', ->
       task = undefined
       arg_task = undefined
-      before ->
+      before_all ->
         arg_task = new Task()
         task = new Task arg_task
       
@@ -261,3 +256,39 @@ describe 'Task', ->
               seq.completed().should.be.true
               seq.started_seqs().should.be.true
 
+
+describe 'A task', ->
+  create = undefined
+  
+  before_all ->
+    create = require '../lib'
+  
+  it 'should properly call tasks linked to it after it has already been started', ->
+    next = undefined
+    dyn_called = false
+    
+    root_task = create (next_arg) -> next = next_arg
+    dyn_task = create (n) ->
+      dyn_called = true
+      n()
+    root_task.start()
+    #Ensure our starting conditions are correct
+    root_task.started().should.be.true
+    root_task.completed().should.be.false
+    
+    #Now add our link after root started
+    root_task.link dyn_task
+    dyn_task.started().should.be.true
+    dyn_task.completed().should.be.true
+    dyn_task.started_seqs().should.be.false
+    dyn_called.should.be.true
+    
+    #Now complete the root, and make sure our linked completes.
+    next()
+    dyn_task.started_seqs().should.be.true
+    root_task.completed().should.be.true
+  
+
+
+
+if require.main is module then dork.run()

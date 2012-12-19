@@ -1,9 +1,12 @@
-#
-# test/index.coffee
-#
-# Copyright (c) 2012 Lee Olayvar <leeolayvar@gmail.com>
-# MIT Licensed
-#
+# 
+# # Test Index
+# 
+# Execute this, or any sub file to test that specific collection of tests.
+dork = require 'dork'
 
 
-require './task'
+
+
+exports.options = require './options'
+exports.task = require './task'
+if require.main is module then dork.run()
