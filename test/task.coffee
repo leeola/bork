@@ -268,17 +268,25 @@ describe 'A task', ->
     dyn_called = false
     
     root_task = create (next_arg) -> next = next_arg
-    dyn_task = create -> dyn_called = true
+    dyn_task = create (n) ->
+      dyn_called = true
+      n()
     root_task.start()
     #Ensure our starting conditions are correct
     root_task.started().should.be.true
     root_task.completed().should.be.false
+    
     #Now add our link after root started
     root_task.link dyn_task
-    console.log "Dyn Task Started:#{dyn_task.started()}, Completed:#{dyn_task.completed()}, dyn_called:#{dyn_called}"
     dyn_task.started().should.be.true
     dyn_task.completed().should.be.true
+    dyn_task.started_seqs().should.be.false
     dyn_called.should.be.true
+    
+    #Now complete the root, and make sure our linked completes.
+    next()
+    dyn_task.started_seqs().should.be.true
+    root_task.completed().should.be.true
   
 
 

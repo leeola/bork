@@ -154,8 +154,13 @@ class Task
   link: (task) =>
     if task instanceof Function
       task = new Task task
+    
     @_links.push task
     task._links.push @
+    
+    if @started()
+      task.start()
+    
     return task
   
   # (task) -> new Task(task) | task
@@ -179,6 +184,9 @@ class Task
     @_pars.push task
     task._pars.push @
     
+    if @started()
+      task.start()
+    
     # Return the newly given task so that it can be chained.
     return task
   
@@ -194,6 +202,14 @@ class Task
   req: (task) =>
     if task instanceof Function
       task = new Task task
+    
+    #We are throwing an error because i'm not sure of a sane way to handle
+    #adding a requirement **after** this-task has already started.
+    if @started()
+      throw new Error 'Task already started'
+    else if @completed()
+      throw new Error 'Task already completed'
+    
     @_reqs.push task
     return @
   
@@ -209,6 +225,10 @@ class Task
     if task instanceof Function
       task = new Task task
     @_seqs.push task
+    
+    if @completed()
+      task.start()
+    
     return task
   
   # () -> undefined
